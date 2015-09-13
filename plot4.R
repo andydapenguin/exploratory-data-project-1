@@ -8,13 +8,12 @@ fullset <- read.table(path,
                       col.names = colNames,
                       stringsAsFactors = FALSE, 
                       na.strings = '?')
-#subset for dates
+#date conversion, subset for dates
 fullset$date <- as.Date(fullset$date, format='%d/%m/%Y')
 data <- subset(fullset, date >= '2007-02-01' & date <= '2007-02-02') 
 
-#date conversions
-datetime <- paste(as.Date(data$date), data$time)
-data$time <- as.POSIXct(datetime)
+#date & time conversions
+data$time <- strptime(c(data$date, ' ', data$time), '%Y-%m-%d %T')
 
 #plot 4th & final chart
 par(mfrow=c(2,2), mar=c(4,4,2,1), oma=c(0,0,2,0))
