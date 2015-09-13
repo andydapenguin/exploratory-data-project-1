@@ -8,13 +8,12 @@ fullset <- read.table(path,
                       col.names = colNames,
                       stringsAsFactors = FALSE, 
                       na.strings = '?')
-#subset for dates
+#date conversion, then subset for dates
 fullset$date <- as.Date(fullset$date, format='%d/%m/%Y')
 data <- subset(fullset, date >= '2007-02-01' & date <= '2007-02-02') 
 
-#date conversions
-datetime <- paste(as.Date(data$date), data$time)
-data$time <- as.POSIXct(datetime)
+#date & time conversion
+data$time <- strptime(c(data$date, ' ', data$time), '%Y-%m-%d %T')
 
 #plot 2nd chart
 plot(data$Global_active_power~data$Datetime, type="l",
